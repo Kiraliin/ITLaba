@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "y4SP5KBli+aE14vD3afIkhoN24Wsi946rHecnlu82N89ktola5MyEr8nEuJKC7XLcWwTKdN/RXVyX8aoYhZdNA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\79241\\source\\repos\\InternerTechnologies\\InternerTechnologies\\InternerTechnologies.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\79241\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
+  "logs": []
+}
