@@ -8,6 +8,7 @@ public class SchenduleService
     private IDoctorRepository _doctorRepository;
 
     public SchenduleService(ISchenduleRepository repo, IDoctorRepository doctorRepo)
+
     {
         _repository = repo;
         _doctorRepository = doctorRepo;

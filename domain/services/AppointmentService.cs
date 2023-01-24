@@ -39,6 +39,7 @@ public class AppointmentService
     {
         var appointments = _repository.GetAllBySpec(spec);
         var list = ExcludeAppointments(appointments);
+
         return Result.Ok(list);
     }
 
@@ -46,6 +47,7 @@ public class AppointmentService
     {
         if (!_doctorRepository.Exists(doctor.Id))
             return Result.Fail<IEnumerable<DateTime>>("Doctor doesn't exists");
+
         var appointments = _repository.GetAllByDoctor(doctor);
         var list = ExcludeAppointments(appointments);
         return Result.Ok(list);

@@ -1,6 +1,6 @@
 ﻿namespace domain.models;
 
-public class Schendule
+public class Schedule
 {
     public int Id { get; set; }
     public int DoctorId { get; set; }
@@ -8,6 +8,7 @@ public class Schendule
     public DateTime EndTime { get; set; }
 
     public Schendule(int id, int doctorId, DateTime startTime, DateTime endTime)
+
     {
         Id = id;
         DoctorId = doctorId;
