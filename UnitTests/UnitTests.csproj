@@ -26,4 +26,11 @@
 		<ProjectReference Include="..\domain\domain.csproj" />
 	</ItemGroup>
 
+<<<<<<< Updated upstream
+=======
+	<ItemGroup>
+	  <Folder Include="bin\Debug\net7.0\" />
+	</ItemGroup>
+	
+>>>>>>> Stashed changes
 </Project>
