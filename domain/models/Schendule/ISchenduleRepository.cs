@@ -1,6 +1,7 @@
 ﻿namespace domain.models;
 
-public interface IScheduleRepository : IRepository<Schedule>
+public interface ISchenduleRepository : IRepository<Schendule>
 {
-    IEnumerable<Schedule> GetScheduleByDate(Doctor doctor, DateOnly date);
+    IEnumerable<Schendule> GetSchenduleByDate(Doctor doctor, DateOnly date);
+
 }

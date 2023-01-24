@@ -2,54 +2,55 @@
 
 namespace domain.services;
 
-public class ScheduleService
+public class SchenduleService
 {
-    private IScheduleRepository _repository;
+    private ISchenduleRepository _repository;
     private IDoctorRepository _doctorRepository;
 
-    public ScheduleService(IScheduleRepository repo, IDoctorRepository doctorRepo)
+    public SchenduleService(ISchenduleRepository repo, IDoctorRepository doctorRepo)
+
     {
         _repository = repo;
         _doctorRepository = doctorRepo;
     }
 
-    public Result<IEnumerable<Schedule>> GetByDoctor(Doctor doctor, DateOnly date)
+    public Result<IEnumerable<Schendule>> GetByDoctor(Doctor doctor, DateOnly date)
     {
         if (!_doctorRepository.Exists(doctor.Id))
-            return Result.Fail<IEnumerable<Schedule>>("Doctor doesn't exists");
+            return Result.Fail<IEnumerable<Schendule>>("Doctor doesn't exists");
         if (!_doctorRepository.IsValid(doctor))
-            return Result.Fail<IEnumerable<Schedule>>("Doctor is not invalid");
+            return Result.Fail<IEnumerable<Schendule>>("Doctor is not invalid");
 
-        return Result.Ok<IEnumerable<Schedule>>(_repository.GetScheduleByDate(doctor, date));
+        return Result.Ok<IEnumerable<Schendule>>(_repository.GetSchenduleByDate(doctor, date));
     }
 
-    public Result<Schedule> Add(Schedule schedule)
+    public Result<Schendule> Add(Schendule schendule)
     {
-        if (!_doctorRepository.Exists(schedule.DoctorId))
-            return Result.Fail<Schedule>("Doctor doesn't exists");
+        if (!_doctorRepository.Exists(schendule.DoctorId))
+            return Result.Fail<Schendule>("Doctor doesn't exists");
 
-        if (_repository.Exists(schedule.Id))
-            return Result.Fail<Schedule>("Schedule already exists");
+        if (_repository.Exists(schendule.Id))
+            return Result.Fail<Schendule>("Schendule already exists");
 
-        _repository.Create(schedule);
-        return Result.Ok<Schedule>(schedule);
+        _repository.Create(schendule);
+        return Result.Ok<Schendule>(schendule);
     }
 
-    public Result<Schedule> Update(Schedule schedule)
+    public Result<Schendule> Update(Schendule schendule)
     {
-        if (!_repository.Exists(schedule.Id))
-            return Result.Fail<Schedule>("Schedule Doesn't exists");
+        if (!_repository.Exists(schendule.Id))
+            return Result.Fail<Schendule>("Schendule Doesn't exists");
 
-        _repository.Update(schedule);
-        return Result.Ok<Schedule>(schedule);
+        _repository.Update(schendule);
+        return Result.Ok<Schendule>(schendule);
     }
 
-    public Result<Schedule> Delete(Schedule schedule)
+    public Result<Schendule> Delete(Schendule schendule)
     {
-        if (!_repository.Exists(schedule.Id))
-            return Result.Fail<Schedule>("Schedule Doesn't exists");
+        if (!_repository.Exists(schendule.Id))
+            return Result.Fail<Schendule>("Schendule Doesn't exists");
 
-        _repository.Delete(schedule.Id);
-        return Result.Ok<Schedule>(schedule);
+        _repository.Delete(schendule.Id);
+        return Result.Ok<Schendule>(schendule);
     }
 }

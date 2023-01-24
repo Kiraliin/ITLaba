@@ -7,7 +7,8 @@ public class Schedule
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 
-    public Schedule(int id, int doctorId, DateTime startTime, DateTime endTime)
+    public Schendule(int id, int doctorId, DateTime startTime, DateTime endTime)
+
     {
         Id = id;
         DoctorId = doctorId;

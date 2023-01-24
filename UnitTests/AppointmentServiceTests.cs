@@ -16,7 +16,6 @@ public class AppointmentServiceTests
         _appointmentService = new AppointmentService(_repository.Object, _doctorRepository.Object);
     }
 
-    // Test entities ~~
     public Doctor GetDoctor(string name = "Vi Alex")
     {
 

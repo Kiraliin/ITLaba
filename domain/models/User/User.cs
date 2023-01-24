@@ -1,4 +1,4 @@
-﻿namespace domain;
+﻿namespace domain.models;
 
 public class User
 {
