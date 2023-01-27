@@ -8,49 +8,48 @@ public class SchenduleService
     private IDoctorRepository _doctorRepository;
 
     public SchenduleService(ISchenduleRepository repo, IDoctorRepository doctorRepo)
-
     {
         _repository = repo;
         _doctorRepository = doctorRepo;
     }
 
-    public Result<IEnumerable<Schendule>> GetByDoctor(Doctor doctor, DateOnly date)
+    public async Task<Result<IEnumerable<Schendule>>> GetByDoctor(Doctor doctor, DateOnly date)
     {
-        if (!_doctorRepository.Exists(doctor.Id))
+        if (!await _doctorRepository.Exists(doctor.Id))
             return Result.Fail<IEnumerable<Schendule>>("Doctor doesn't exists");
         if (!_doctorRepository.IsValid(doctor))
             return Result.Fail<IEnumerable<Schendule>>("Doctor is not invalid");
 
-        return Result.Ok<IEnumerable<Schendule>>(_repository.GetSchenduleByDate(doctor, date));
+        return Result.Ok<IEnumerable<Schendule>>(await _repository.GetSchenduleByDate(doctor, date));
     }
 
-    public Result<Schendule> Add(Schendule schendule)
+    public async Task<Result<Schendule>> Add(Schendule schendule)
     {
-        if (!_doctorRepository.Exists(schendule.DoctorId))
+        if (!await _doctorRepository.Exists(schendule.DoctorId))
             return Result.Fail<Schendule>("Doctor doesn't exists");
 
-        if (_repository.Exists(schendule.Id))
+        if (await _repository.Exists(schendule.Id))
             return Result.Fail<Schendule>("Schendule already exists");
 
-        _repository.Create(schendule);
+        await _repository.Create(schendule);
         return Result.Ok<Schendule>(schendule);
     }
 
-    public Result<Schendule> Update(Schendule schendule)
+    public async Task<Result<Schendule>> Update(Schendule schendule)
     {
-        if (!_repository.Exists(schendule.Id))
+        if (!await _repository.Exists(schendule.Id))
             return Result.Fail<Schendule>("Schendule Doesn't exists");
 
-        _repository.Update(schendule);
+        await _repository.Update(schendule);
         return Result.Ok<Schendule>(schendule);
     }
 
-    public Result<Schendule> Delete(Schendule schendule)
+    public async Task<Result<Schendule>> Delete(Schendule schendule)
     {
-        if (!_repository.Exists(schendule.Id))
+        if (!await _repository.Exists(schendule.Id))
             return Result.Fail<Schendule>("Schendule Doesn't exists");
 
-        _repository.Delete(schendule.Id);
+        await _repository.Delete(schendule.Id);
         return Result.Ok<Schendule>(schendule);
     }
 }
