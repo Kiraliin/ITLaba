@@ -1,6 +1,9 @@
-﻿namespace DataBase.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DataBase.Repositories;
 using Converters;
 using domain.models;
+
 public class DoctorRepository : IDoctorRepository
 {
 
@@ -11,34 +14,37 @@ public class DoctorRepository : IDoctorRepository
         _context = context;
     }
 
-    public Doctor Create(Doctor item)
+    public async Task<Doctor> Create(Doctor item)
     {
-        _context.Doctors.Add(item.ToModel());
+        await _context.Doctors.AddAsync(item.ToModel());
+        await _context.SaveChangesAsync();
         return item;
     }
 
-    public Doctor? Get(int id)
+    public async Task<Doctor> Get(int id)
     {
-        var doctor = _context.Doctors.FirstOrDefault(d => d.Id == id);
-        return doctor?.ToDomain();
+        var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == id);
+        return doctor.ToDomain();
     }
 
-    public IEnumerable<Doctor> List()
+    public async Task<IEnumerable<Doctor>> List()
     {
-        return _context.Doctors.Select(doctorModel => doctorModel.ToDomain()).ToList();
+        var list = await _context.Doctors.Select(doctorModel => doctorModel.ToDomain()).ToListAsync();
+        return list;
     }
 
-    public bool Exists(int id)
+    public async Task<bool> Exists(int id)
     {
-        return _context.Doctors.Any(d => d.Id == id);
+        return await _context.Doctors.AnyAsync(d => d.Id == id);
     }
 
-    public bool Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        var doctor = _context.Doctors.FirstOrDefault(d => d.Id == id);
+        var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == id);
         if (doctor == default)
             return false; // Not deleted
         _context.Doctors.Remove(doctor);
+        await _context.SaveChangesAsync();
         return true;
     }
 
@@ -53,14 +59,19 @@ public class DoctorRepository : IDoctorRepository
         return true;
     }
 
-    public Doctor Update(Doctor entity)
+    public async Task<Doctor> Update(Doctor entity)
     {
         _context.Doctors.Update(entity.ToModel());
+        await _context.SaveChangesAsync();
         return entity;
     }
 
-    public IEnumerable<Doctor> GetBySpec(Specialization spec)
+    public async Task<IEnumerable<Doctor>> GetBySpec(Specialization spec)
     {
-        return _context.Doctors.Where(d => d.Specialization == spec.ToModel()).Select(d => d.ToDomain());
+        var doctors = await _context.Doctors.
+            Where(d => d.Specialization == spec.ToModel())
+            .Select(d => d.ToDomain())
+            .ToListAsync();
+        return doctors;
     }
 }

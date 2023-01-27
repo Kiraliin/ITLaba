@@ -23,47 +23,47 @@ public class UserServiceTests
     public void LoginIsEmptyOrNull()
     {
         var response = _userService.GetByLogin(string.Empty);
-        Assert.False(response.Success);
-        Assert.Equal("Empty login", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("Empty login", response.Result.Error);
     }
 
     [Fact]
     public void LoginNotFound()
     {
         _repository.Setup(repo => repo.GetByLogin(It.IsAny<string>()))
-            .Returns(() => null);
+            .ReturnsAsync(() => null);
 
         var response = _userService.GetByLogin("mikhailova");
 
-        Assert.False(response.Success);
-        Assert.Equal("User with this login doesn't exists", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("User with this login doesn't exists", response.Result.Error);
     }
     [Fact]
     public void LoginFound()
     {
         _repository.Setup(repo => repo.ExistLogin(It.Is<string>(s => s == "mikhailova")))
-            .Returns(true);
+            .ReturnsAsync(true);
         _repository.Setup(repo => repo.GetByLogin(It.Is<string>(s => s == "mikhailova")))
-            .Returns(GetUser("mikhailova"));
+            .ReturnsAsync(GetUser("mikhailova"));
 
         var response = _userService.GetByLogin("mikhailova");
 
-        Assert.True(response.Success);
+        Assert.True(response.Result.Success);
     }
 
     [Fact]
     public void CreateAlreadyExists()
     {
         _repository.Setup(repo => repo.ExistLogin(It.Is<string>(s => s == "mikhailova"))) // id
-            .Returns(true);
+            .ReturnsAsync(true);
 
         _repository.Setup(repo => repo.IsValid(It.IsAny<User>()))
             .Returns(true);
 
         var response = _userService.CreateUser(GetUser("mikhailova"));
 
-        Assert.False(response.Success);
-        Assert.Equal("User with that username already exists", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("User with that username already exists", response.Result.Error);
     }
 
     [Fact]
@@ -74,29 +74,29 @@ public class UserServiceTests
 
         var response = _userService.CreateUser(GetUser(""));
 
-        Assert.False(response.Success);
-        Assert.Equal("User data is not valid", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("User data is not valid", response.Result.Error);
     }
 
     [Fact]
     public void CreateOk()
     {
         _repository.Setup(repo => repo.ExistLogin(It.IsAny<string>()))
-            .Returns(false);
+            .ReturnsAsync(false);
         _repository.Setup(repo => repo.IsValid(It.IsAny<User>()))
             .Returns(true);
 
         var response = _userService.CreateUser(GetUser("mikhailova"));
 
-        Assert.True(response.Success);
+        Assert.True(response.Result.Success);
     }
 
     [Fact]
     public void CheckExistEmptyLogin()
     {
         var response = _userService.CheckExist("", "password");
-        Assert.False(response.Success);
-        Assert.Equal("Empty login", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("Empty login", response.Result.Error);
 
     }
 
@@ -104,8 +104,8 @@ public class UserServiceTests
     public void CheckExistEmptyPassword()
     {
         var response = _userService.CheckExist("login", "");
-        Assert.False(response.Success);
-        Assert.Equal("Empty password", response.Error);
+        Assert.False(response.Result.Success);
+        Assert.Equal("Empty password", response.Result.Error);
     }
 
     [Fact]
@@ -115,11 +115,11 @@ public class UserServiceTests
                 It.Is<string>(u => u == "mikhailova"),
                 It.Is<string>(p => p == "123")
             )
-        ).Returns(true);
+        ).ReturnsAsync(true);
 
         var response = _userService.CheckExist("mikhailova", "123");
 
-        Assert.True(response.Success);
+        Assert.True(response.Result.Success);
     }
 
 

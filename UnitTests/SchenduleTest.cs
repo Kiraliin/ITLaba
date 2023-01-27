@@ -1,7 +1,5 @@
 ﻿namespace UnitTests;
-
 using domain.models;
-
 using Moq;
 public class SchenduleServiceTests
 {
@@ -31,58 +29,58 @@ public class SchenduleServiceTests
     public void GetByDoctorNotExist()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(false);
+            .ReturnsAsync(false);
 
         _doctorRepository.Setup(repo => repo.IsValid(It.IsAny<Doctor>()))
             .Returns(true);
 
         var res = _schenduleService.GetByDoctor(GetDoctor(), new DateOnly());
 
-        Assert.False(res.Success);
-        Assert.Equal("Doctor doesn't exists", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Doctor doesn't exists", res.Result.Error);
     }
 
     [Fact]
     public void GetByDoctorNotValid()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         _doctorRepository.Setup(repo => repo.IsValid(It.IsAny<Doctor>()))
             .Returns(false);
 
         var res = _schenduleService.GetByDoctor(GetDoctor(), new DateOnly());
 
-        Assert.False(res.Success);
-        Assert.Equal("Doctor is not invalid", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Doctor is not invalid", res.Result.Error);
     }
 
     [Fact]
     public void GetByDoctorOk()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         _doctorRepository.Setup(repo => repo.IsValid(It.IsAny<Doctor>()))
             .Returns(true);
 
         var res = _schenduleService.GetByDoctor(GetDoctor(), new DateOnly());
 
-        Assert.True(res.Success);
+        Assert.True(res.Result.Success);
     }
 
     [Fact]
     public void AddSchenduleDoctorIsNotExists()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(false);
+            .ReturnsAsync(false);
         _doctorRepository.Setup(repo => repo.IsValid(It.IsAny<Doctor>()))
             .Returns(true);
 
         var res = _schenduleService.Add(GetSchendule());
 
-        Assert.False(res.Success);
-        Assert.Equal("Doctor doesn't exists", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Doctor doesn't exists", res.Result.Error);
 
     }
 
@@ -90,49 +88,49 @@ public class SchenduleServiceTests
     public void AddSchenduleAlreadyExists()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         var res = _schenduleService.Add(GetSchendule());
 
-        Assert.False(res.Success);
-        Assert.Equal("Schendule already exists", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Schendule already exists", res.Result.Error);
     }
 
     [Fact]
     public void AddSchenduleOk()
     {
         _doctorRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(false);
+            .ReturnsAsync(false);
 
         var res = _schenduleService.Add(GetSchendule());
-        Assert.True(res.Success);
+        Assert.True(res.Result.Success);
     }
 
     [Fact]
     public void UpdateSchenduleIsNotExists()
     {
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(false);
+            .ReturnsAsync(false);
 
         var res = _schenduleService.Update(GetSchendule());
-        Assert.False(res.Success);
-        Assert.Equal("Schendule Doesn't exists", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Schendule Doesn't exists", res.Result.Error);
     }
 
     [Fact]
     public void UpdateSchenduleOk()
     {
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         var res = _schenduleService.Update(GetSchendule());
-        Assert.True(res.Success);
+        Assert.True(res.Result.Success);
     }
 
     [Fact]
@@ -140,21 +138,21 @@ public class SchenduleServiceTests
     public void DeleteNotExists()
     {
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(false);
+            .ReturnsAsync(false);
 
         var res = _schenduleService.Delete(GetSchendule());
-        Assert.False(res.Success);
-        Assert.Equal("Schendule Doesn't exists", res.Error);
+        Assert.False(res.Result.Success);
+        Assert.Equal("Schendule Doesn't exists", res.Result.Error);
     }
 
     [Fact]
     public void DeleteOk()
     {
         _schenduleRepository.Setup(repo => repo.Exists(It.Is<int>(id => id == 1)))
-            .Returns(true);
+            .ReturnsAsync(true);
 
         var res = _schenduleService.Delete(GetSchendule());
-        Assert.True(res.Success);
+        Assert.True(res.Result.Success);
     }
 
 }

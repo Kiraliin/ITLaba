@@ -2,5 +2,5 @@
 
 public interface IDoctorRepository : IRepository<Doctor>
 {
-    public IEnumerable<Doctor> GetBySpec(Specialization spec);
+    public Task<IEnumerable<Doctor>> GetBySpec(Specialization spec);
 }
