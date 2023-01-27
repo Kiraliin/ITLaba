@@ -1,6 +1,6 @@
 ﻿namespace domain.models;
 
-public class Schedule
+public class Schendule
 {
     public int Id { get; set; }
     public int DoctorId { get; set; }
