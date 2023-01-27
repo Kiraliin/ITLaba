@@ -28,7 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="bin\Debug\net7.0\private.json" />
+	  <Folder Include="bin\Debug\net7.0\" />
 	</ItemGroup>
-	
+
 </Project>
